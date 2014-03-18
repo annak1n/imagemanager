@@ -16,8 +16,8 @@ try {
     /**
      * Complete request URL
      */
-    $url = $_SERVER[''];
-
+    echo $url = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    
     /**
      * Default controller.
      */
@@ -47,7 +47,7 @@ try {
     if (!is_file($controllerFile)) {
 
         /* Controller file doesn't exists. */
-        throw Exception("Invalid Controller", 404);
+        throw new Exception("Invalid Controller", 404);
     }
 
     include_once $controllerFile;
@@ -85,6 +85,7 @@ try {
     $objMethod->invoke();
     
 } catch (Exception $ex) {
+    /*@TODO log this and show 404 error page instead. */
     echo '<br/>Exception: ' . $ex->getCode() . ' - ' . $ex->getMessage() . ' at line ' . $ex->getLine() . ' in file ' . $ex->getFile();
 }
 exit();

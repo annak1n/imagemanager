@@ -38,6 +38,12 @@ class PathVars {
      */
     public static $CORE;
     
+    /**
+     * Utility Directory Path 
+     * @var string 
+     */
+    public static $UTILS;
+    
     static function init() {
         
         self::$ROOT_DIR = DOCUMENT_ROOT;
@@ -49,6 +55,8 @@ class PathVars {
         self::$MODELS = self::$ROOT_DIR.'/models';
         
         self::$VIEWS = self::$ROOT_DIR.'/views';
+        
+        self::$UTILS = self::$ROOT_DIR.'/utils';
         
     }
     

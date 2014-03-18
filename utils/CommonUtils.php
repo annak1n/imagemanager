@@ -20,7 +20,9 @@ class CommonUtils {
      */
     public static function findController($url) {
         $controller = '';
-        
+        if( $_SERVER['REQUEST_URI'] == '/' ) {
+            $controller = 'home';
+        }
         return $controller;
     }
     
@@ -31,7 +33,9 @@ class CommonUtils {
      */
     public static function findMethod($url) {
         $method = '';
-        
+        if( $_SERVER['REQUEST_URI'] == '/' ) {
+            $method = 'index';
+        }
         return $method;
     }
     

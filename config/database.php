@@ -6,3 +6,16 @@
  * and open the template in the editor.
  */
 
+class Database {
+    
+    public static $SERVER = "localhost";
+    
+    public static $USERNAME = "root";
+    
+    public static $PASSWORD = "mysql";
+    
+    public static $PORT = ""; // @TODO
+    
+    public static $DATABASE_SCHEMA = "imagemanager";
+    
+}

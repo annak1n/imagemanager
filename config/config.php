@@ -8,4 +8,6 @@
 
 define('DOCUMENT_ROOT' , $_SERVER['DOCUMENT_ROOT']);
 
-define('ENABLED_LAYOUTS', array('main', 'ajax'));
+class Config {
+    public static $ENABLED_LAYOUTS =  array('main', 'ajax');
+}

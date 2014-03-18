@@ -6,4 +6,4 @@
 RewriteEngine On
 
 
-RewriteRule ^(.*)$ /codeigniter/index.php [QSA,NC,L]
+# RewriteRule ^(.*)$ /codeigniter/index.php [QSA,NC,L]

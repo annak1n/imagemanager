@@ -63,7 +63,8 @@ Folder Structure :
 Apache Modules required :
 1) URL Rewrite
  
-Apache Virtual Host URL : http://imagemanager.com/
+Apache Virtual Host URL : dev.imagemanager.com	
+Root Path : c:/users/vijay/documents/github/imagemanager
 
 @todo :
 
