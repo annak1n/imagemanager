@@ -15,6 +15,12 @@ class PathVars {
     public static $ROOT_DIR;
     
     /**
+     * Site URL
+     * @var string  
+     */
+    public static $SITE_URL;
+    
+    /**
      * Controller directory path 
      * @var string 
      */
@@ -44,19 +50,38 @@ class PathVars {
      */
     public static $UTILS;
     
+    /**
+     * Css directory url
+     * @var string 
+     */
+    public static $CSS;
+    
+    /**
+     * Js directory url.
+     * @var string 
+     */
+    public static $JS;
+    
     static function init() {
         
         self::$ROOT_DIR = DOCUMENT_ROOT;
         
+        self::$SITE_URL = 'http://'.$_SERVER['SERVER_NAME'];
+        
         self::$CORE = self::$ROOT_DIR.'/core';
         
-        self::$CONTROLLER = self::$ROOT_DIR.'/contollers';
+        self::$CONTROLLER = self::$ROOT_DIR.'/controllers';
         
         self::$MODELS = self::$ROOT_DIR.'/models';
         
         self::$VIEWS = self::$ROOT_DIR.'/views';
         
         self::$UTILS = self::$ROOT_DIR.'/utils';
+        
+        self::$CSS = self::$SITE_URL.'/assets/css';
+        
+        self::$JS = self::$SITE_URL.'/assets/js';
+        
         
     }
     

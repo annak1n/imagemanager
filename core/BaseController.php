@@ -13,6 +13,8 @@ abstract class BaseController {
      * @var array 
      */
     protected $reqParam = array();
+    protected $reqGet = array();
+    protected $reqPost = array();
     
     /**
      * Data from the session.
@@ -21,10 +23,34 @@ abstract class BaseController {
     protected $sessionData = array();
     
     /**
+     * Controller View
+     * @var string 
+     */
+    protected $content;
+    
+    /**
+     * Name of the controller called.
+     * @var string 
+     */
+    protected $controller;
+    
+    /**
+     * Name of the method called.
+     * @var string  
+     */
+    protected $method;
+    
+    /**
      * Path of method views and layout to render the output.
      * @var string 
      */
     protected $layout, $view;
+    
+    /**
+     * Variable data passed from controller to view.
+     * @var array
+     */
+    protected $viewData = array();
     
     
     function __construct() {
@@ -39,7 +65,15 @@ abstract class BaseController {
      */
     function init($controller, $method) {
         
+        $this->controller = $controller;
+        $this->method = $method;
+        
         $this->reqParam = array_merge($_GET, $_POST);
+        
+        $this->reqPost = $_POST;
+        
+        $this->reqGet = $_GET;
+        
         $this->decideView($controller, $method);
         $this->decideLayout();
     }
@@ -50,7 +84,55 @@ abstract class BaseController {
      * @param String $method
      */
     protected function decideView($controller, $method) {
-        $this->view = VIEWS_PATH.'/'.$controller.'/'.$method.'.php';
+        $this->view = PathVars::$VIEWS.'/'.$controller.'/'.$method.'.php';
+    }
+    
+    /**
+     * 
+     * @param string $custom_view - custom view page.
+     * @return string
+     */
+    protected function generateView($custom_view = "", $force_custom = false) {
+        
+        /* Start buffer.*/
+        ob_start();
+        ob_clean();
+        
+        $viewFilePath = PathVars::$VIEWS.'/'.$custom_view.'.php';
+        
+        /* Convert all the data set in controller methods to variable. */
+        extract($this->viewData);
+        
+        if(is_file($viewFilePath)) {
+            
+            /* Create custom view path. */
+            include_once $viewFilePath;
+        } elseif(!is_file($viewFilePath) && $force_custom){
+            /**
+             * Forcing to load custom view only, to avoid loading of same page inside itself
+             * in case custom view file is not found.
+             * Custom view not found. -- Log error.
+             */
+        } else {
+            
+            /* Create default view path.*/
+            $this->decideView($this->controller, $this->method);
+            
+            include_once $this->view;
+        }
+        /* set the controller view content to $content variable. */
+        $content = ob_get_contents();
+        /* clean buffer */
+        ob_end_clean();
+        
+        
+        return $content;
+    }
+    
+    protected function loadCustomView($custom_view) {
+        
+        echo $this->generateView($custom_view, true);
+        
     }
     
     /**
@@ -61,10 +143,10 @@ abstract class BaseController {
     protected function decideLayout($custom_layout = "") {
         
         if($custom_layout != "" && in_array($custom_layout, Config::$ENABLED_LAYOUTS)) {
-            $this->layout = VIEWS_PATH.'/'.$custom_layout.'.php';
+            $this->layout = PathVars::$VIEWS.'/layouts/'.$custom_layout.'.php';
             return true;
         }
-        $this->layout = VIEWS_PATH.'/'.MAIN_LAYOUT.'.php';
+        $this->layout = PathVars::$VIEWS.'/layouts/'.  Config::$MAIN_LAYOUT.'.php';
             
         return true;
     }
@@ -73,9 +155,21 @@ abstract class BaseController {
      * Render the view for a request.
      * @param string $content
      */
-    public function render($content = '') {
-        $content = $content;
-        include_once $this->layout;
+    public function render($custom_view = "") {
+        
+        $content = $this->generateView($custom_view);
+        try {
+            if(!is_file($this->layout)) {
+                
+                throw new Exception("Invalid layout");
+            }
+            
+            include_once $this->layout;
+            
+        } catch (Exception $ex) {
+            
+        }
+        
     }
     
     /**

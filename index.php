@@ -16,18 +16,8 @@ try {
     /**
      * Complete request URL
      */
-    echo $url = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $url = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     
-    /**
-     * Default controller.
-     */
-    $controller = DEFAULT_CONTROLLER; // config.php
-
-    /**
-     * Default method.
-     */
-    $method = DEFAULT_METHOD; // config.php
-
     /**
      * Read controller from url.
      */
@@ -41,13 +31,13 @@ try {
     /**
      * Create of path to controller file.
      */
-    $controllerFile = CommonUtils::getControllerFile();
+    $controllerFile = CommonUtils::getControllerFile($controller);
 
     /* Check if controller requested in the url exists. */
     if (!is_file($controllerFile)) {
 
         /* Controller file doesn't exists. */
-        throw new Exception("Invalid Controller", 404);
+        throw new Exception("Invalid Controller - Controller file not found.", 404);
     }
 
     include_once $controllerFile;
@@ -63,26 +53,35 @@ try {
     if (!class_exists($controllerClass)) {
 
         /* controller class doesn't exist */
-        throw Exception("Invalid Controller", 404);
+        throw new Exception("Invalid Controller", 404);
     }
     
-    $objController = ReflectionClass($controllerClass);
+    /**
+     * Intantiate the controller.
+     * @TODO: Use reflection class.
+     */
+    $objContClass = new $controllerClass;
+    /**
+     * Initilize the controller process.
+     */
+    $objContClass->init($controller, $method);
     
-    $objMethod = $objController->getMethod('init');
-    $objMethod->invoke();
-
-    if ($objController->hasMethod($method)) {
-        $objMethod = $objController->getMethod($method);
-        $objMethod->invoke();
+    
+    if (method_exists($objContClass, $method)) {
+        $objContClass->$method();
     } else {
-        throw Exception("Invalid Method", "404");
+        throw new Exception("Invalid Method", "404");
     }
+    /**
+     * Render the output.
+     */
+    $objContClass->render();
     
-    $objMethod = $objController->getMethod('render');
-    $objMethod->invoke();
+    /**
+     * Packup the controller.
+     */
+    $objContClass->packup();
     
-    $objMethod = $objController->getMethod('packup');
-    $objMethod->invoke();
     
 } catch (Exception $ex) {
     /*@TODO log this and show 404 error page instead. */
