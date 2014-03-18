@@ -1,0 +1,9 @@
+##
+# Image Manager .htaccess settings
+#
+
+# Enable url rewriting 
+RewriteEngine On
+
+
+RewriteRule ^(.*)$ /codeigniter/index.php [QSA,NC,L]
