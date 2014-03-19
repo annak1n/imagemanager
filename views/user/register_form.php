@@ -17,8 +17,8 @@ if( isset($reg_form_error) ) {
 ?>
 <form name="register" method="post" id="frmRegister" action="<?php echo PathVars::$SITE_URL ?>?c=user&m=register">
    
-   <lable for="username"> Username : </lable>
-   <input type="text" name="username" id="fldUsername" value="" required="required"></input>
+   <lable for="email"> Email : </lable>
+   <input type="email" name="email" id="fldEmail" value="<?php echo isset($email)?$email:''; ?>"  required="required"></input>
    <br/>
    <lable for="pass"> Password : </lable>
    <input type="password" name="pass" id="fldPass" value="<?php echo isset($username)?$username:''; ?>"  required="required"></input>
@@ -26,8 +26,8 @@ if( isset($reg_form_error) ) {
    <lable for="pass"> Confirm Password : </lable>
    <input type="password" name="confirmPass" id="fldConfirmPass" value=""  required="required"></input>
    <br/>
-   <lable for="email"> Email : </lable>
-   <input type="email" name="email" id="fldEmail" value="<?php echo isset($email)?$email:''; ?>"  required="required"></input>
+   <lable for="admincode"> Admin Code : </lable>
+   <input type="password" name="admincode" id="fldAdmincode" value=""></input>
    <br/>
    <input type="submit" name="signup" value="Sign Up"></input>
 </form>

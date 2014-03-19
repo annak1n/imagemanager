@@ -15,11 +15,11 @@ if( isset($reg_form_error) ) {
 ?>
 <form name="login" method="post" id="frmLogin" action="<?php echo PathVars::$SITE_URL ?>?c=user&m=login">
    
-   <lable for="username"> Username : </lable>
-   <input type="text" name="username" id="fldUsername" value="" required="required"></input>
+   <lable for="email"> Email : </lable>
+   <input type="email" name="email" id="fldEmail" value="<?php echo isset($email)?$email:''; ?>" required="required"></input>
    <br/>
    <lable for="pass"> Password : </lable>
-   <input type="password" name="pass" id="fldPass" value="<?php echo isset($username)?$username:''; ?>"  required="required"></input>
+   <input type="password" name="pass" id="fldPass" value=""  required="required"></input>
    <br/>
    <lable for="rememberme"> Remember Me : </lable>
    <input type="checkbox" name="rememberme" id="fldRememberMe" value="1"></input>

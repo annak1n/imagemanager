@@ -79,13 +79,13 @@ class Session {
      */
     public static function getUserData() {
         if(is_array(self::$userData) && !empty(self::$userData)) {
-            return self::$userData;
+            return (array) self::$userData;
         }
         
         $jsnUserData = self::getData('UsrSess');
         $userData = json_decode($jsnUserData);
         
-        return self::$userData = $userData;
+        return self::$userData = (array) $userData;
         
     }
     
@@ -93,7 +93,7 @@ class Session {
      * Destroy user session data.
      * @param array $userData
      */
-    public static function destroyUserSession(Array $userData) {
+    public static function destroyUserSession() {
         self::$userData = NULL;
         self::unsetData('UsrSess');
     }

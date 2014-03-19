@@ -15,6 +15,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'].'/config/config.php';
 require_once DOCUMENT_ROOT.'/config/path.php';
 require_once DOCUMENT_ROOT.'/config/database.php';
+require_once DOCUMENT_ROOT.'/config/session.php';
 
 /**
  * Include Core Classes

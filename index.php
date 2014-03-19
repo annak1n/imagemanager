@@ -27,7 +27,7 @@ try {
      * Read method/ action from url
      */
     $method = CommonUtils::findMethod($url);
-
+    
     /**
      * Create of path to controller file.
      */

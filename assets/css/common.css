@@ -57,3 +57,29 @@ input {
 form {
     margin-left: 10px;
 }
+.dashboard_main_frame {
+    border-top: 2px solid black;
+    padding: 0px;
+}
+
+.dashboard_left_bar{
+    background-color: darkgray;
+    width: 170px;
+    height: 600px;
+    border-right: 2px solid black;
+}
+
+.dashboard_left_menu{
+    margin-top: 20px;
+}
+
+.dashboard_left_menu li{
+    padding-left: 10px;
+}
+.dashboard_main_body {}
+
+.head {
+    background-color: darkgray;
+    height: 50px;
+    padding: 10px;
+}

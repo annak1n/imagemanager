@@ -26,7 +26,7 @@ abstract class BaseModel {
      * Close db connection when object is destroyed
      */
     public function __destruct() {
-        mysql_close($this->db);
+        $this->db->close();
     }
     
     /**

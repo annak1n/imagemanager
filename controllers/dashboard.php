@@ -9,6 +9,10 @@ class DashboardController extends BaseController {
     
     public function __construct() {
         parent::__construct();
+        
+        if(!$this->userSess) {
+            //CommonUtils::redirect('?c=home&m=index');
+        } 
     }
     
     public function index() {

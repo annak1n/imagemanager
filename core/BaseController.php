@@ -52,7 +52,11 @@ abstract class BaseController {
      */
     protected $viewData = array();
     
-    
+    /**
+     * User session data when user is logged in.
+     * @var array 
+     */
+    protected $userSess = array();
     function __construct() {
         /* Contructor Called */
     }
@@ -74,6 +78,11 @@ abstract class BaseController {
         
         $this->reqGet = $_GET;
         
+        $this->userSess = Session::getUserData();
+        
+        $this->viewData['usEmail'] = $this->userSess['u_email'];
+        $this->viewData['usId'] = $this->userSess['u_id'];
+            
         $this->decideView($controller, $method);
         $this->decideLayout();
     }
