@@ -1,23 +1,23 @@
 CREATE DATABASE  IF NOT EXISTS `imagemanager`;
 USE `imagemanager`;
 
---Table structure for table `im_images`
+-- Table structure for table `im_images`
 
 DROP TABLE IF EXISTS `im_images`;
 
-CREATE TABLE `im_images` (
+CREATE TABLE IF NOT EXISTS `im_images` (
   `i_id` int(11) NOT NULL AUTO_INCREMENT,
   `i_title` varchar(45) NOT NULL,
   `i_name` varchar(45) NOT NULL,
-  `i_u_id` int(11) NOT NULL,
+  `i_u_id` bigint(20) NOT NULL,
   `i_datetime` datetime NOT NULL,
   PRIMARY KEY (`i_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- Table structure for table `im_users`
 DROP TABLE IF EXISTS `im_users`;
 
-CREATE TABLE `im_users` (
+CREATE TABLE IF NOT EXISTS `im_users` (
   `u_id` bigint(20) NOT NULL,
   `u_email` varchar(100) NOT NULL,
   `u_password` varchar(45) NOT NULL,

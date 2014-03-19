@@ -1,11 +1,12 @@
 Image Manager Application :
-Technologies :
+
+Technologies ----------------------------------------------------
 1) PHP 5.3
 2) Mysql
 3) Apache
 4) JQuery
 
-Modules :
+Modules ----------------------------------------------------------
 1) User
 2) Dashboard User/Admin
 3) Image Manager
@@ -56,6 +57,10 @@ Folder Structure --------------------------------------------------
             a) js/
                 1. login.js
                 2. register.js
+            b) upload/ -- User uploaded images container.
+       h) utils/
+            a) CommonUtils.php
+
                 
 Application Setup ----------------------------------------------------
 
@@ -71,7 +76,36 @@ Root Path : c:/users/vijay/documents/github/imagemanager
 Configuration :
     
     1) Database.php - Provide database credentials.
+        
     
+Database Schema : sql/db_schema.sql
+
+Important Configuration -----------------------------------------------
+
+File: config/config.php
+
+    $DEBUG_MODE = false; -- enable debug mode and CommonUtils::debug() will 
+                            print on screen.
+
+    $ACTIVATION_REQUIRED = false; -- need user to send activation code in 
+                                     email or auto activation without send an email.
+    $ADMIN_CODE = 4507; -- While user registration if user enter this code when it will
+                           become admin user.
+    
+    $IMAGE_MAX_SIZE = 1024000; -- Max image size allowed.
+
+    $IMAGE_ALLOWED_TYPES = array('image/jpeg', 'image/jpg', 'image/png'); -- Type of image file can be 
+                                                                            uploaded.
+    
+
+Login with Sample Data ------------------------------------------------
+
+Insert sample data from sql/sample_data.sql
+
+Standard User : vjpaleo@gmail.com / 123456
+Admin User : admin@gmail.com / 123456
+
+While admin registration code : 4507
 
 Tasks Status ----------------------------------------------------------
 
