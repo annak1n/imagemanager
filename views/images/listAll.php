@@ -8,7 +8,7 @@
     <div class="dashboard_main_frame">
         <?php echo $this->loadCustomView('layouts/sidebar'); ?>
         <div class="dashboard_main_body">
-            <h2> All Images </h2>
+            <h2> My Images </h2>
             <?php
             if (isset($li_error)) {
                 ?>
@@ -17,14 +17,30 @@
             }
             ?>
             <div class="image_grid">
-                <div class="floated_img">
-                    <img src="img.jpg" alt="Some image">
-                    <p>Description of above image</p>
-                </div>
-                <div class="floated_img">
-                    <img src="img2.jpg" alt="Another image">
-                    <p>Description of above image</p>
-                </div>
+                <?php
+                if(isset($images_list) && !empty($images_list)) {
+                    foreach($images_list as $value) {
+                ?>
+                    <div class="floated_img">
+                        <img src="<?php echo PathVars::$IMAGE_UPLOAD_URL.'/'.$value['i_id'].'_'.$value['i_name']?>" title="<?php echo $value['i_title']; ?>" alt="<?php echo $value['i_title']; ?>">
+                        <p><?php echo $value['i_title']; ?>
+                            &nbsp;&nbsp;
+                            -
+                            &nbsp;&nbsp;
+                        <a href="/index.php?c=images&m=delete&id=<?php echo $value['i_id']; ?>&name=<?php echo $value['i_name']; ?>'">Delete</a></p>
+                    </div>
+                <?php
+                    }
+                } else {
+                ?>
+                    <div class="floated_img">
+                        No Images uploaded.
+                    </div>
+                <?php
+                }
+                ?>
+                
+                
             </div>
 
         </div>

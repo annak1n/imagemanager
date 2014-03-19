@@ -26,7 +26,11 @@ abstract class BaseModel {
      * Close db connection when object is destroyed
      */
     public function __destruct() {
-        $this->db->close();
+        
+        if(!$this->db->connect_errno) {
+            $this->db->close();
+        }
+        
     }
     
     /**
@@ -34,12 +38,15 @@ abstract class BaseModel {
      */
     protected function connect() {
        try {
-           $this->db = mysqli_connect(Database::$SERVER, Database::$USERNAME, Database::$PASSWORD, Database::$DATABASE_SCHEMA);
-            if (!$this->db) {
-                throw new Exception('Could not connect: ' . mysql_error());
+           $this->db = new mysqli(Database::$SERVER, Database::$USERNAME, Database::$PASSWORD, Database::$DATABASE_SCHEMA);
+           
+           if ($this->db->connect_errno) {
+                throw new Exception('Could not connect to mysql: ' . $this->db->connect_error);
             }
        } catch (Exception $ex) {
            /* @TODO with proper wrapper meathod. */
+           echo $ex->getMessage();
+           exit;
        }
         
     }

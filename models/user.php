@@ -135,7 +135,7 @@ class User extends BaseModel {
         $updateFields = array();
 
         foreach ($inData['fields'] as $key => $value) {
-            $updateFields[] = $key . " = ' " . $value . "' ";
+            $updateFields[] = $key . " = '" . $value . "' ";
         }
 
         $sql .= implode(", ", $updateFields);

@@ -62,6 +62,13 @@ class PathVars {
      */
     public static $JS;
     
+    
+    public static $IMAGE_UPLOAD;
+    
+    public static $IMAGE_UPLOAD_URL;
+    
+    
+    
     static function init() {
         
         self::$ROOT_DIR = DOCUMENT_ROOT;
@@ -81,6 +88,10 @@ class PathVars {
         self::$CSS = self::$SITE_URL.'/assets/css';
         
         self::$JS = self::$SITE_URL.'/assets/js';
+        
+        self::$IMAGE_UPLOAD = self::$ROOT_DIR.'/assets/upload';
+        
+        self::$IMAGE_UPLOAD_URL = self::$SITE_URL.'/assets/upload';
         
         
     }

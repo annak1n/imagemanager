@@ -80,8 +80,13 @@ abstract class BaseController {
         
         $this->userSess = Session::getUserData();
         
-        $this->viewData['usEmail'] = $this->userSess['u_email'];
-        $this->viewData['usId'] = $this->userSess['u_id'];
+        if($this->userSess) {
+            
+            $this->viewData['usEmail'] = $this->userSess['u_email'];
+            $this->viewData['usId'] = $this->userSess['u_id'];
+            $this->viewData['usIsAdmin'] = $this->userSess['u_is_admin'];
+
+        }
             
         $this->decideView($controller, $method);
         $this->decideLayout();

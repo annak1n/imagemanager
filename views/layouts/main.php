@@ -20,9 +20,13 @@ extract($this->viewData);
     <body>
         
         <div class="main_container">
-            <?php if($usEmail != '') :?>
+            <?php if(isset($usEmail) && $usEmail != '') :?>
             <div class="head">
-            <h3>Dashboard - Welcome <i><?php echo $usEmail; ?></i></h3>
+            <h3>Dashboard - Welcome <i><?php echo $usEmail; ?> 
+                    <?php if($usIsAdmin) { ?>
+                    (<span style="color: red;">Admin</span>)
+                    <?php } ?>
+                </i></h3>
             </div>
             <?php endif; ?>
             <?php echo $content; ?>

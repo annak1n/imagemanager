@@ -95,5 +95,12 @@ class CommonUtils {
         }
         
     }
+    /**
+     * get current datetime
+     * @return string
+     */
+    public static function nowDataTime() {
+        return date('Y-m-d h:i:s');
+    }
 
 }

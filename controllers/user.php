@@ -21,7 +21,7 @@ class UserController extends BaseController {
 
     public function login() {
         /* check user session exists , if yes then refirect user to dashboard */
-        $this->isLoggedIn();
+        $this->redirectIfLoggedIn();
 
         $formFields = array('email', 'pass');
         $this->viewData = array_merge($this->viewData, array_fill_keys($formFields, ''));
@@ -64,7 +64,7 @@ class UserController extends BaseController {
 
     public function register() {
         /* check user session exists , if yes then refirect user to dashboard */
-        $this->isLoggedIn();
+        $this->redirectIfLoggedIn();
 
         $formFields = array('email', 'pass', 'confirmPass', 'admincode');
         $this->viewData = array_merge($this->viewData, array_fill_keys($formFields, ''));
@@ -175,9 +175,9 @@ class UserController extends BaseController {
 
     public function manage() {
 
-        /* check user session exists , if yes then refirect user to dashboard */
-        $this->isLoggedIn();
-
+        /**
+         * Required fields to change email.
+         */
         $formFields = array('email', 'oldEmail', 'uid');
         $this->viewData = array_merge($this->viewData, array_fill_keys($formFields, ''));
 
@@ -197,7 +197,7 @@ class UserController extends BaseController {
                 $inData['limit'] = '1';
                 $userData = $this->objUserModel->getUsers($inData);
                 if (!empty($userData)) {
-                    var_dump($userData);
+                    
                     /* Check if email is assigned to a different user. */
                     if (($userData['u_email'] != '') && ($userData['u_id'] != $this->reqPost['uid'])) {
                         /* Email is already in use by some other user. */
@@ -206,7 +206,7 @@ class UserController extends BaseController {
                         $this->viewData['ch_form_error'] = "This email already exists in the system, Please select the different email id.";
                     } else {
                         /* update new email. */
-                        $inData['fields']['u_email'] = $this->reqPost['email'];
+                        $inData['fields']['u_email'] = trim($this->reqPost['email']);
 
                         if ($this->objUserModel->updateUser($inData)) {
                             /* update user session. */
@@ -230,7 +230,7 @@ class UserController extends BaseController {
      * Check if user is logged in or not.
      * @return boolean
      */
-    public function isLoggedIn() {
+    public function redirectIfLoggedIn() {
         $userData = Session::getUserData();
         return ($userData) ? TRUE : FALSE;
     }
@@ -242,10 +242,6 @@ class UserController extends BaseController {
 
         Session::destroyUserSession();
         CommonUtils::redirect('?c=home&m=index');
-    }
-
-    public function disable() {
-        
     }
 
 }

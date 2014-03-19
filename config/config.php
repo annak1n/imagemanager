@@ -23,5 +23,8 @@ class Config {
     public static $ACTIVATION_REQUIRED = false;
     public static $ADMIN_CODE = 4507;
     
+    public static $IMAGE_MAX_SIZE = 1024000;
+    public static $IMAGE_ALLOWED_TYPES = array('image/jpeg', 'image/jpg', 'image/png');
+    
     
 }
