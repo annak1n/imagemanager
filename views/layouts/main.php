@@ -4,6 +4,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
+extract($this->viewData);
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,8 +18,14 @@
     <link rel="stylesheet" media="screen" href="<?php echo PathVars::$CSS ?>/common.css" type="text/css"/>
     </head>
     <body>
+        
         <div class="main_container">
-        <?php echo $content; ?>
+            <?php if($usEmail != '') :?>
+            <div class="head">
+            <h3>Dashboard - Welcome <i><?php echo $usEmail; ?></i></h3>
+            </div>
+            <?php endif; ?>
+            <?php echo $content; ?>
         </div>
     </body>
 </html>
