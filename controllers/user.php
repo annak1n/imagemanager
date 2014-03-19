@@ -30,33 +30,36 @@ class UserController extends BaseController {
          * User login form submitted.
          */
         if (isset($this->reqPost['signin'])) {
-            
+
             /* Check required fields for user login. */
             if ($this->reqPost['pass'] == '' || $this->reqPost['email'] == '') {
-                $this->viewData['form_error'] = "All fields are mendetory!";
+                $this->viewData['login_form_error'] = "All fields are mendetory!";
             } else {
                 /* login user */
                 $inData = array();
                 $inData['u_email'] = $this->reqPost['email'];
                 $inData['u_password'] = md5($this->reqPost['pass']);
-                
+
                 $returnData = $this->objUserModel->login($inData);
-                echo $returnData['response_code'];
+                
+                /* Print the response code if debug mode is on.*/
+                CommonUtils::debug($returnData['response_code']);
+                
                 if ($returnData['response_code']) {
+                    
                     /* Create user session */
                     Session::setUserData($returnData['user_data']);
+                    
                     /* redirect user to dashboard */
                     CommonUtils::redirect('?c=dashboard&m=index');
                 } else {
                     /* login unsuccessfull. */
                     $this->viewData = array_merge($this->viewData, $this->reqPost);
-                    
-                    $this->viewData['form_error'] = "Unable to login!";
+
+                    $this->viewData['login_form_error'] = "Unable to login!";
                 }
             }
         }
-
-        
     }
 
     public function register() {
@@ -87,28 +90,26 @@ class UserController extends BaseController {
                 $inData['u_password'] = md5($this->reqPost['pass']);
                 $inData['u_raw_pass'] = $this->reqPost['confirmPass'];
                 $inData['u_is_admin'] = ($this->reqPost['admincode'] == Config::$ADMIN_CODE) ? 1 : 0;
-                
+
                 $returnData = $this->objUserModel->register($inData);
-                echo $returnData['response_code'];
+                
                 if ($returnData['response_code'] === 1) {
-                    if(Config::$ACTIVATION_REQUIRED) {
+                    if (Config::$ACTIVATION_REQUIRED) {
                         /* send activation email to user. */
                         $this->sendActivationEmail($returnData['user_data']);
-
                     } else {
-                        
-                        /*Auto activate the user */
+
+                        /* Auto activate the user */
                         $this->reqGet['ac'] = md5($returnData['user_data']['u_id']);
                         $this->reqGet['e'] = $returnData['user_data']['u_email'];
                         $this->activate();
-                        
+
                         /* if registration success then sign in the user. */
                         $this->reqPost['signin'] = 'Sign In';
                         $this->login();
-                        
+
                         exit();
                     }
-                    
                 } elseif ($returnData['response_code'] === 2) {
                     /* registration unsuccessfull. */
                     $this->viewData['reg_form_error'] = " System Error : Unable to register user.";
@@ -128,14 +129,16 @@ class UserController extends BaseController {
      * Activate user.
      */
     public function activate() {
-        
-        if ($this->reqGet['ac'] == '' || $this->reqGet['e'] == '') {
+
+        if ($this->reqGet['ac'] != '' || $this->reqGet['e'] != '') {
             $inData = array();
             $inData['ac'] = $this->reqGet['ac'];
             $inData['e'] = $this->reqGet['e'];
 
-            if ($this->objUserModel->activate($inData)) {
+            if ($res = $this->objUserModel->activate($inData)) {
                 CommonUtils::redirect('?c=user&m=login&m=activation_success');
+            } else {
+                CommonUtils::debug($res);
             }
         }
     }
@@ -171,7 +174,56 @@ class UserController extends BaseController {
     }
 
     public function manage() {
-        
+
+        /* check user session exists , if yes then refirect user to dashboard */
+        $this->isLoggedIn();
+
+        $formFields = array('email', 'oldEmail', 'uid');
+        $this->viewData = array_merge($this->viewData, array_fill_keys($formFields, ''));
+
+        /**
+         * Change email form submitted.
+         */
+        if (isset($this->reqPost['changeEmail'])) {
+
+            /* Check required fields for change user's email. */
+            if ($this->reqPost['oldEmail'] == '' || $this->reqPost['email'] == '' || $this->reqPost['uid'] == '') {
+                $this->viewData['ch_form_error'] = "Data Invalid!";
+            } else {
+                /* login user */
+                $inData = array();
+                $inData['where']['u_email'] = $this->reqPost['oldEmail'];
+                //$inData['where']['u_id'] = $this->reqPost['uid'];
+                $inData['limit'] = '1';
+                $userData = $this->objUserModel->getUsers($inData);
+                if (!empty($userData)) {
+                    var_dump($userData);
+                    /* Check if email is assigned to a different user. */
+                    if (($userData['u_email'] != '') && ($userData['u_id'] != $this->reqPost['uid'])) {
+                        /* Email is already in use by some other user. */
+                        $this->viewData = array_merge($this->viewData, $this->reqPost);
+
+                        $this->viewData['ch_form_error'] = "This email already exists in the system, Please select the different email id.";
+                    } else {
+                        /* update new email. */
+                        $inData['fields']['u_email'] = $this->reqPost['email'];
+
+                        if ($this->objUserModel->updateUser($inData)) {
+                            /* update user session. */
+                            Session::updateUserSession('u_email', $this->reqPost['email']);
+
+                            /* Redirect user to home page. */
+                            CommonUtils::redirect('?c=home&m=index');
+                        }
+                    }
+                } else {
+                    /* email change unsuccessfull. */
+                    $this->viewData = array_merge($this->viewData, $this->reqPost);
+
+                    $this->viewData['ch_form_error'] = "Records not found., so unable to update the email.";
+                }
+            }
+        }
     }
 
     /**

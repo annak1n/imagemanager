@@ -19,6 +19,7 @@ class Config {
     public static $ENABLED_LAYOUTS =  array('main', 'ajax');
     public static $MAIN_LAYOUT = 'main';
     
+    public static $DEBUG_MODE = true;
     public static $ACTIVATION_REQUIRED = false;
     public static $ADMIN_CODE = 4507;
     

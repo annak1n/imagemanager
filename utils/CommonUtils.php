@@ -73,14 +73,26 @@ class CommonUtils {
         }
     }
     
+    /**
+     * Redirect wrapper function
+     * @param type $url
+     */
     public static function redirect($url) {
         header('Location:'.PathVars::$SITE_URL.$url);
     }
     
+    /**
+     * Debug wrapper function
+     * @param type $val
+     */
     public static function debug($val) {
-        echo '<pre>';
-        var_dump($val);
-        echo '</pre>';
+       
+        if(Config::$DEBUG_MODE) {
+            echo '<pre>';
+            var_dump($val);
+            echo '</pre>';
+
+        }
         
     }
 

@@ -67,6 +67,7 @@ form {
     width: 170px;
     height: 600px;
     border-right: 2px solid black;
+    float: left;
 }
 
 .dashboard_left_menu{
@@ -76,10 +77,31 @@ form {
 .dashboard_left_menu li{
     padding-left: 10px;
 }
-.dashboard_main_body {}
+.dashboard_main_body {
+    float: left;
+    width: 800px;
+}
 
 .head {
     background-color: darkgray;
     height: 50px;
     padding: 10px;
+}
+
+.image_grid {
+    margin: 10px;
+    width: 100%;
+}
+
+.floated_img {
+    margin: 10px;
+    float: left;
+}
+
+.floated_img img {
+    height: 150px;
+}
+
+h2 {
+    margin-left: 10px;
 }

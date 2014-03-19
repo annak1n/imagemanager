@@ -7,9 +7,9 @@
 ?>
 <h3>Sign In </h2>
 <?php 
-if( isset($reg_form_error) ) {
+if( isset($login_form_error) ) {
 ?>
-<div class="form_error"><?php echo $reg_form_error; ?></div>
+<div class="form_error"><?php echo $login_form_error; ?></div>
 <?php
 }
 ?>
